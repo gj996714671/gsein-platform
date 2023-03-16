@@ -35,11 +35,11 @@ public class SystemLoggingAspect {
 
         // 根据日志级别记录日志
         switch (level) {
-            case TRACE -> logger.trace(s);
-            case DEBUG -> logger.debug(s);
-            case INFO -> logger.info(s);
-            case WARN -> logger.warn(s);
-            case ERROR -> logger.error(s);
+            case TRACE :logger.trace(s);
+            case DEBUG :logger.debug(s);
+            case INFO :logger.info(s);
+            case WARN :logger.warn(s);
+            case ERROR :logger.error(s);
         }
     }
 
@@ -79,11 +79,11 @@ public class SystemLoggingAspect {
 
         // 根据日志级别记录日志
         switch (level) {
-            case TRACE -> logger.trace(s);
-            case DEBUG -> logger.debug(s);
-            case INFO -> logger.info(s);
-            case WARN -> logger.warn(s);
-            case ERROR -> logger.error(s);
+            case TRACE :logger.trace(s);
+            case DEBUG :logger.debug(s);
+            case INFO :logger.info(s);
+            case WARN :logger.warn(s);
+            case ERROR :logger.error(s);
         }
     }
 

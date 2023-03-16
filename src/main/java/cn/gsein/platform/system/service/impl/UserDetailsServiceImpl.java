@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
         List<Role> roles = user.getRoles();
-        List<Permission> permissions = roles.stream().flatMap(r->r.getPermissions().stream()).distinct().toList();
+        List<Permission> permissions = roles.stream().flatMap(r->r.getPermissions().stream()).distinct().collect(Collectors.toList());
         user.setAuthorities(permissions);
         return user;
     }

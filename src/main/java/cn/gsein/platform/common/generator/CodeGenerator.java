@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用于生成实体、Controller、Service、代码的类
@@ -49,26 +49,24 @@ public final class CodeGenerator {
                 .stream()
                 .map(this::buildFieldFromMap)
                 .filter(field ->
-                        !Set.of("id", "createdTime", "createdBy", "updatedTime", "updatedBy", "isDeleted", "remark")
+                        !new HashSet<>(Arrays.asList("id", "createdTime", "createdBy", "updatedTime", "updatedBy", "isDeleted", "remark"))
                                 .contains(field.getName()))
-                .toList();
+                .collect(Collectors.toList());
 
         // 通过freeMarker生成实体类
-        Map<String, Object> params = Map.of(
-                "fields", fields,
-                "className", className,
-                "tableName", tableName,
-                "basePackage", basePackage);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("fields", fields);
+        params.put("className", className);
+        params.put("tableName", tableName);
+        params.put("basePackage", basePackage);
         generateClass(entityPath, "entity.java.ftl", className, params);
     }
 
     public void generateController(String controllerPath, String basePackage, String className) {
         // 通过freeMarker生成类
-        Map<String, Object> params = Map.of(
-                "className", className,
-                "basePackage", basePackage);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("className", className);
+        params.put("basePackage", basePackage);
         generateClass(controllerPath, "controller.java.ftl", className + "Controller", params);
     }
 
@@ -79,8 +77,7 @@ public final class CodeGenerator {
         try {
             Template template = configuration.getTemplate(templateName);
 
-
-            template.process(params, Files.newBufferedWriter(Path.of(path + className + ".java")));
+            template.process(params, Files.newBufferedWriter(Paths.get(path + className + ".java")));
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
@@ -127,28 +124,25 @@ public final class CodeGenerator {
 
     private void generateDao(String daoPath, String basePackage, String className) {
         // 通过freeMarker生成类
-        Map<String, Object> params = Map.of(
-                "className", className,
-                "basePackage", basePackage);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("className", className);
+        params.put("basePackage", basePackage);
         generateClass(daoPath, "dao.java.ftl", className + "Dao", params);
     }
 
     private void generateServiceImpl(String serviceImplPath, String basePackage, String className) {
         // 通过freeMarker生成类
-        Map<String, Object> params = Map.of(
-                "className", className,
-                "basePackage", basePackage);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("className", className);
+        params.put("basePackage", basePackage);
         generateClass(serviceImplPath, "serviceImpl.java.ftl", className + "ServiceImpl", params);
     }
 
     private void generateService(String servicePath, String basePackage, String className) {
         // 通过freeMarker生成类
-        Map<String, Object> params = Map.of(
-                "className", className,
-                "basePackage", basePackage);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("className", className);
+        params.put("basePackage", basePackage);
         generateClass(servicePath, "service.java.ftl", className + "Service", params);
     }
 }

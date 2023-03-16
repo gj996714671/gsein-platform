@@ -12,6 +12,8 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -42,8 +44,8 @@ public class Knife4jConfig {
     }
 
     private List<SecurityContext> securityContexts() {
-        return List.of(SecurityContext.builder()
-                .securityReferences(List.of(
+        return Collections.singletonList(SecurityContext.builder()
+                .securityReferences(Collections.singletonList(
                         new SecurityReference("Authorization",
                                 new AuthorizationScope[]{
                                         new AuthorizationScope("global", "")})))
@@ -55,7 +57,7 @@ public class Knife4jConfig {
         // 安全模式，这里指定token通过Authorization请求头传递
         ApiKey apiKey = new ApiKey("Authorization", "Authorization", In.HEADER.toValue());
 
-        return List.of(apiKey);
+        return Collections.singletonList(apiKey);
 
     }
 }

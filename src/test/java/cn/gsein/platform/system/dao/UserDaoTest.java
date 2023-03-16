@@ -54,13 +54,13 @@ class UserDaoTest {
     @Test
     void deleteById() {
         userDao.deleteById(1L);
-        Assertions.assertTrue(userDao.findById(1L).isEmpty());
+        Assertions.assertTrue(userDao.findById(1L).isPresent());
     }
 
     @Test
 //    @Transactional
     void logicDeleteById() {
         userDao.logicDeleteById(2L);
-        Assertions.assertTrue(userDao.findById(2L).isEmpty());
+        Assertions.assertTrue(userDao.findById(2L).isPresent());
     }
 }
